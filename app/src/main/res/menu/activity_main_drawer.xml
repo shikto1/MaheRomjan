@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/groupOne">
+        <item
+            android:id="@+id/sehriOiftarerSomoi"
+            android:icon="@drawable/menu"
+            android:title="@string/sehriIfterTime" />
+        <item
+            android:id="@+id/rujarNiotEftarerDua"
+            android:icon="@drawable/menu"
+            android:title="@string/rujarNiotOEftarerDuaTitle" />
+        <item
+            android:id="@+id/rujaVongherKaron"
+            android:icon="@drawable/menu"
+            android:title="@string/rujaVongerKaronTitle" />
+        <item
+            android:id="@+id/rujaVongherKaronNoi"
+            android:icon="@drawable/menu"
+            android:title="@string/rujaVongerKaronNoiTitle" />
+        <item
+            android:id="@+id/romjanerFojilot"
+            android:icon="@drawable/menu"
+            android:title="@string/maheRomjanerFojilot" />
+        <item
+            android:id="@+id/shobeKodorerFojilot"
+            android:icon="@drawable/menu"
+            android:title="@string/ShobeKodorerFojilot" />
+      <item
+            android:id="@+id/suraYasingBanglaSoho"
+            android:icon="@drawable/menu"
+            android:title="@string/suraIasinBanglaOrthoSoho" />
+    </group>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/groupTow">
+        <item
+            android:id="@+id/share_in_facebook"
+            android:title="@string/shareKorun" />
+        <item
+            android:id="@+id/rateUS"
+            android:title="@string/ratingDin" />
+    </group>
+
+
+</menu>

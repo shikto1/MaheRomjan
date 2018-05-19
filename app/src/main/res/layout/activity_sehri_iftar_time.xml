@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.walletmix.maheromjan.Activity.SehriIftarTimeActivity">
+
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="ঢাকা জেলা "-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="@dimen/largeText"-->
+            <!--android:background="@color/colorAccent"-->
+            <!--android:gravity="left"-->
+            <!--android:paddingLeft="@dimen/mediumPadding"/>-->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/dateTv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/tarikh"
+            android:textColor="@color/white"
+            android:textSize="@dimen/mediumText" />
+
+        <TextView
+            android:id="@+id/dayTv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/bar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/mediumText" />
+
+        <TextView
+            android:id="@+id/sehriTimeTv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/sehree"
+            android:textColor="@color/white"
+            android:textSize="@dimen/mediumText" />
+
+        <TextView
+            android:id="@+id/iftarTimeTv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/iftaar"
+            android:textColor="@color/white"
+            android:textSize="@dimen/mediumText" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/sehri_iftar_timeListView"
+        android:layout_width="match_parent"
+        android:listSelector="@android:color/transparent"
+        android:layout_height="match_parent"></ListView>
+
+</LinearLayout>

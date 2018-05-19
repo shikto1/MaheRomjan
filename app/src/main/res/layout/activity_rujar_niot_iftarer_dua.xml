@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:layout_marginTop="@dimen/mediumPadding"
+                android:gravity="center"
+                android:padding="@dimen/mediumPadding"
+                android:layout_marginLeft="@dimen/mediumPadding"
+                android:layout_marginRight="@dimen/mediumPadding"
+                android:layout_marginBottom="@dimen/smallPadding"
+                android:text="@string/rujarNiotT"
+                android:textColor="@color/white"
+                android:textSize="@dimen/largeText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding"
+                android:gravity="center"
+                android:text="@string/rujarNiotD"
+                android:layout_marginBottom="@dimen/padding"
+                android:textSize="@dimen/normalText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:padding="@dimen/mediumPadding"
+                android:text="@string/iftarerDuaT"
+                android:textColor="@color/white"
+                android:layout_marginRight="@dimen/mediumPadding"
+                android:layout_marginLeft="@dimen/mediumPadding"
+                android:textSize="@dimen/largeText" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/iftarerDuaD"
+                android:textSize="@dimen/normalText" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

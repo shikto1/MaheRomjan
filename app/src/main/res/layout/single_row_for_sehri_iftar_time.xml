@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/dateTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="17 May"
+        android:textSize="@dimen/mediumText" />
+
+    <TextView
+        android:id="@+id/dayTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/SAT"
+        android:textSize="@dimen/mediumText" />
+
+    <TextView
+        android:id="@+id/sehriTimeTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="03:35"
+        android:textSize="@dimen/mediumText" />
+
+    <TextView
+        android:id="@+id/iftarTimeTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="06:40"
+        android:textSize="@dimen/mediumText" />
+</LinearLayout>

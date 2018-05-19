@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:id="@+id/locationButtton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/normalText"
+                android:layout_alignParentLeft="true"
+                android:text="মানিকগঞ্জ "/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/somoiBakiTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/iftarerSomoiBaki"
+        android:gravity="center_horizontal"
+        android:textColor="@color/black"
+        android:layout_marginBottom="@dimen/mediumPadding"/>
+
+    <View
+        android:id="@+id/dividerFirst"
+        style="@style/VerticalDivider"
+        android:layout_marginLeft="@dimen/padding"
+        android:layout_marginRight="@dimen/padding"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/timerTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/timeText"/>
+    </LinearLayout>
+    <View
+        android:id="@+id/dividerSecond"
+        style="@style/VerticalDivider"
+        android:layout_marginLeft="@dimen/padding"
+        android:layout_marginRight="@dimen/padding"/>
+
+    <TextView
+        android:id="@+id/ajkerSehriIftarerSomoiTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/mediumText"
+        android:text=""
+        android:gravity="center"
+        android:layout_marginTop="@dimen/smallPadding"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="40dp"
+        android:paddingRight="@dimen/padding"
+        android:paddingLeft="@dimen/padding"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/sehri_iftaar_er_dua_titleTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/normalText"
+            android:textColor="@color/black"
+            android:text="@string/iftarirDuaTitle"/>
+        <TextView
+            android:id="@+id/duaTv"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/iftarerduaBangla"/>
+
+    </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+</LinearLayout>
