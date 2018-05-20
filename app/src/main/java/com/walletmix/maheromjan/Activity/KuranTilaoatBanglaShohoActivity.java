@@ -41,6 +41,7 @@ public class KuranTilaoatBanglaShohoActivity extends AppCompatActivity implement
 
     private Handler handler;
     private ActionBar actionBar;
+    private AdmobAddManager admobAddManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +52,10 @@ public class KuranTilaoatBanglaShohoActivity extends AppCompatActivity implement
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        admobAddManager = new AdmobAddManager();
         //Showing Add...
-        new AdmobAddManager().showInterStitialAd(this);
-        new AdmobAddManager().showBannerToActivity(this, R.id.adView);
+        admobAddManager.showInterStitialAdTwo(this);
+        admobAddManager.showBannerToActivity(this, R.id.adView);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {

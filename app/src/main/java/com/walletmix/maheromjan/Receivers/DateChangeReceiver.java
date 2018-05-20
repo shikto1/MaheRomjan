@@ -25,16 +25,13 @@ public class DateChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        Log.v("SHISHIR_13", "SCHEDULER CALLED");
-        AlertServices.shoToast(context, "schedule started");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         int month = calendar.get(Calendar.MONTH)+1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int year = calendar.get(Calendar.YEAR);
         if (year == 2018) {
-            if ((month == 5 && day >= 17) || (month == 6 && day <= 15)) {
+            if ((month == 5 && day >= 17) || (month == 6 && day <= 16)) {
                 realmManager = new RealmManager(context);
                 plusMinusManager = new SehriIftarPlusMinusManager(context);
                 SessionManager.getInstance(context).put(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, true);

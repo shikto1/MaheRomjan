@@ -44,7 +44,9 @@ public class IftarCountDownServices extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
         if (intent != null) {
             int min = intent.getIntExtra("min", 0);
             int hour = intent.getIntExtra("hour", 0);

@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,9 +27,7 @@ import com.walletmix.maheromjan.Activity.RomjanerHukumAhkamActivity;
 import com.walletmix.maheromjan.Activity.RujarNiotIFtarerDuaActivity;
 import com.walletmix.maheromjan.Activity.SehriIftarTimeActivity;
 import com.walletmix.maheromjan.Activity.SelectDistrictActivity;
-import com.walletmix.maheromjan.Activity.SettingsActivity;
 import com.walletmix.maheromjan.Activity.ShobeKodorerFojilotActvity;
-import com.walletmix.maheromjan.CountDownServices.AlertServices;
 import com.walletmix.maheromjan.CountDownServices.IftarCountDownServices;
 import com.walletmix.maheromjan.CountDownServices.SehriCountDownServices;
 import com.walletmix.maheromjan.Database.RealmManager;
@@ -93,6 +89,7 @@ public class MainActivity extends AppCompatActivity
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy mm:HH");
     private int REQUEST_CODE = 13;
     String TAG = "SHISHIR_13";
+    static int currentHour, currentMin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity
 
         //Showing Add
         admobAddManager.showBannerToActivity(this, R.id.adView);
-        admobAddManager.showInterStitialAd(this);
+
 
         shareDialog = new ShareDialog(this);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -123,9 +120,9 @@ public class MainActivity extends AppCompatActivity
             realmManager.setDhakaTime();
         }
 
-        if (sessionManager.getBoolean(SessionManager.Key.IS_FIRST_TIME, true)) {
-            sessionManager.put(SessionManager.Key.IS_FIRST_TIME, false);
-            if (isRamjanRunning()) {
+        if (isRamjanRunning()) {
+            if (sessionManager.getBoolean(SessionManager.Key.IS_FIRST_TIME, true)) {
+                sessionManager.put(SessionManager.Key.IS_FIRST_TIME, false);
                 TimeShceduleManager.setSchedule(getApplicationContext());
                 sessionManager.put(SessionManager.Key.SHCEDULED_STARTED, true);
                 sessionManager.put(SessionManager.Key.RAMJAN_FINISHED, false);
@@ -154,8 +151,8 @@ public class MainActivity extends AppCompatActivity
                 int year = calendar.get(Calendar.YEAR);
                 int minute = calendar.get(Calendar.MINUTE);
                 int hour = Integer.parseInt(hourS);
-                Log.v(TAG, "Formatted Date: " + formattedDate);
-                Log.v(TAG, hourS + ":" + minute);
+                currentHour = hour;
+                currentMin = minute;
                 // Getting Hour in 24 Format...
                 if (hour == 0) {
                     sessionManager.put(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false);
@@ -184,9 +181,13 @@ public class MainActivity extends AppCompatActivity
                     sessionManager.put(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false);
                 }
             } else {
-                sessionManager.put(SessionManager.Key.RAMJAN_FINISHED, true);
+                setCountDown();
             }
+        } else {
+            sessionManager.put(SessionManager.Key.RAMJAN_FINISHED, true);
+
         }
+
     }
 
     private void init() {
@@ -210,7 +211,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void startIftarCountDownServices() {
-        AlertServices.shoToast(this, "START_IFTAR_COUNT_D");
         sessionManager.put(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false);
         sessionManager.put(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, true);
         int iftarTime = realmManager.getIftarTime();
@@ -235,9 +235,8 @@ public class MainActivity extends AppCompatActivity
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int year = calendar.get(Calendar.YEAR);
-        Log.v(TAG, day + ":" + month + ":" + year);
         if (year == 2018) {
-            if ((month == 5 && day >= 16) || (month == 6 && day <= 15)) {
+            if ((month == 5 && day >= 16) || (month == 6 && day <= 16)) {
                 result = true;
             }
         }
@@ -260,15 +259,12 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         locationButton.setText(SessionManager.getInstance(this).getString(SessionManager.Key.SELECTED_DISTRICT));
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("send_info"));
-        //registerReceiver(receiver,new IntentFilter("send_info"));
         if (sessionManager.getBoolean(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false)) {  // SEHREE Couont down running..
-            Log.v(TAG, "SEHRI_COUNTDOWN_RUNNING");
             somoiBakiTv.setText(getString(R.string.sehrirSomoiBaki));
             sehriIftarDuaTitleTv.setText(getString(R.string.rujarNiotTitle));
             ajkerSehriIftarerSomoiTv.setText(getString(R.string.ajkerSehrirShesSomoi) + ": " + plusMinusManager.getSehri(realmManager.getSehriTime()));
             duaTv.setText(getString(R.string.sehrirDuaBangla));
         } else if (sessionManager.getBoolean(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false)) {
-            Log.v(TAG, "IFTAR_COUNTDOWN_RUNNING");// IFTAAR Count down running...
             somoiBakiTv.setText(getString(R.string.iftarerSomoiBaki));
             ajkerSehriIftarerSomoiTv.setText(getString(R.string.ajkerIftarerSomoi) + ": " + ConverToBanglaManager.getInBangla(plusMinusManager.getIftar(realmManager.getIftarTime())));
             sehriIftarDuaTitleTv.setText(getString(R.string.iftarirDuaTitle));
@@ -278,7 +274,6 @@ public class MainActivity extends AppCompatActivity
                 && !sessionManager.getBoolean(SessionManager.Key.RAMJAN_FINISHED, false)) {
             setUpAfterIftarData();
         } else if (sessionManager.getBoolean(SessionManager.Key.RAMJAN_FINISHED, false)) {  // Ramjan Finished....
-            Log.v(TAG, "RAMJAN FINISHED");
             sehriIftarDuaTitleTv.setText(getString(R.string.hadisTitleOne));
             duaTv.setText(getString(R.string.banglaHadishOne));
             ajkerSehriIftarerSomoiTv.setText("");
@@ -292,7 +287,7 @@ public class MainActivity extends AppCompatActivity
     private void setUpAfterIftarData() {
         somoiBakiTv.setText(getString(R.string.ajkerSehrirShesSomoi));
         String sehriTime = plusMinusManager.getSehri(realmManager.getSehriTime());
-        timerTv.setText(ConverToBanglaManager.getInBangla(sehriTime));
+        timerTv.setText(sehriTime);
         ajkerSehriIftarerSomoiTv.setText(getString(R.string.rateOneTarPorCountDownShuruhobe));
         sehriIftarDuaTitleTv.setText(getString(R.string.rujarNiotTitle));
         duaTv.setText(getString(R.string.sehrirDuaBangla));
@@ -336,14 +331,12 @@ public class MainActivity extends AppCompatActivity
                 String from = intent.getStringExtra("from");
                 if (from.equals("IFTAR")) {
                     if (sessionManager.getBoolean(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false)) {
-                        // AlertServices.shoToast(MainActivity.this,"IFTAR_C_RUNNING");
                         somoiBakiTv.setText(getString(R.string.iftarerSomoiBaki));
                         String time = intent.getStringExtra("time");
                         timerTv.setText(time);
                         // timerTv.setText(ConverToBanglaManager.getInBangla(time));
                     } else if (isIFtarTimeFinished) {
-                        Log.v(TAG, "IFTAR_FINISHED");
-                        //AlertServices.shoToast(MainActivity.this,"IFTAR_FINISHED");
+                        //
                         somoiBakiTv.setText(getString(R.string.ajkerSehrirShesSomoi));
                         String sehriTime = plusMinusManager.getSehri(realmManager.getSehriTime());
                         timerTv.setText(ConverToBanglaManager.getInBangla(sehriTime));
@@ -355,7 +348,6 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     if (sessionManager.getBoolean(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false)) {
                         somoiBakiTv.setText(getString(R.string.sehrirSomoiBaki));
-                        // AlertServices.shoToast(MainActivity.this,"SEHRI_C_RUNNING");
                         String time = intent.getStringExtra("time");
                         //  timerTv.setText(ConverToBanglaManager.getInBangla(time));
                         timerTv.setText(time);
@@ -363,7 +355,6 @@ public class MainActivity extends AppCompatActivity
                         sehriIftarDuaTitleTv.setText(getString(R.string.rujarNiotTitle));
                         duaTv.setText(getString(R.string.sehrirDuaBangla));
                     } else if (isSehriFinished) {
-                        // AlertServices.shoToast(MainActivity.this,"SEHRI _FINISHED");
                         somoiBakiTv.setText(getString(R.string.iftarerSomoiBaki));
                         ajkerSehriIftarerSomoiTv.setText(getString(R.string.ajkerIftarerSomoi) + ": " + ConverToBanglaManager.getInBangla(plusMinusManager.getIftar(realmManager.getIftarTime())));
                         sehriIftarDuaTitleTv.setText(getString(R.string.iftarirDuaTitle));
@@ -380,23 +371,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -502,31 +476,7 @@ public class MainActivity extends AppCompatActivity
                 if (!selectedDistrict.isEmpty()) {
                     sessionManager.put(SessionManager.Key.SELECTED_DISTRICT, selectedDistrict);
                     locationButton.setText(selectedDistrict);
-                    if (sessionManager.getBoolean(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false)) {
-                        //Restrat sehri count down services with new time
-                        int sehriTime = realmManager.getSehriTime();
-                        sehriTime = plusMinusManager.getSehriMinute(sehriTime);
-                        Intent countDownServiceIntent = new Intent(this, SehriCountDownServices.class);
-                        countDownServiceIntent.putExtra("min", sehriTime);
-                        countDownServiceIntent.putExtra("hour", 3);
-                        stopService(new Intent(this, SehriCountDownServices.class));
-                        startService(countDownServiceIntent);
-                    } else if (sessionManager.getBoolean(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false)) {
-                        //Restart iftar count down services with time
-                        int iftarTime = realmManager.getIftarTime();
-                        iftarTime = plusMinusManager.getIftarMinute(iftarTime);
-                        Intent countDownServiceIntent = new Intent(this, IftarCountDownServices.class);
-                        if (iftarTime >= 60) {
-                            int remainder = iftarTime - 60;
-                            countDownServiceIntent.putExtra("hour", 7 + 12);
-                            countDownServiceIntent.putExtra("min", remainder);
-                        } else {
-                            countDownServiceIntent.putExtra("hour", 6 + 12);
-                            countDownServiceIntent.putExtra("min", iftarTime);
-                        }
-                        stopService(new Intent(this, IftarCountDownServices.class));
-                        startService(countDownServiceIntent);
-                    }
+                    setCountDown();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -534,4 +484,26 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    private void setCountDown() {
+        int sehriTime = plusMinusManager.getSehriMinute(realmManager.getSehriTime());
+        int iftarTime = plusMinusManager.getIftarMinute(realmManager.getIftarTime());
+        if (currentHour >= 1 && currentHour <= 3) {
+            if (currentHour >= 1 && currentHour < 3) {
+                startSehriCountDownServices();
+            } else if (currentHour == 3 && currentMin < sehriTime) {
+                startSehriCountDownServices();
+            }
+        } else if (currentHour >= 4 && currentHour <= 18) {
+            if (currentHour >= 4 && currentHour < 18) {
+                startIftarCountDownServices();
+            } else if (currentHour == 18 && currentMin < iftarTime) {
+                startIftarCountDownServices();
+            }
+        } else if (sessionManager.getBoolean(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false)) {
+            startSehriCountDownServices();
+        } else if (sessionManager.getBoolean(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false)) {
+            startIftarCountDownServices();
+        }
+    }
 }

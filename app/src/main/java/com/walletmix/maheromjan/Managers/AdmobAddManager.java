@@ -33,6 +33,17 @@ public class AdmobAddManager {
             }
         });
     }
+    public void showInterStitialAdTwo(Context context) {
+        mInterStitialAd = new InterstitialAd(context);
+        mInterStitialAd.setAdUnitId(context.getString(R.string.interstitial_ad_id_two));
+        mInterStitialAd.loadAd(new AdRequest.Builder().build());
+        mInterStitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                mInterStitialAd.show();
+            }
+        });
+    }
 
 
     //Show Banner Ad.................................
@@ -43,7 +54,6 @@ public class AdmobAddManager {
         mAdView.loadAd(adRequest);
 
     }
-
     public void showBannerAddToFragment(View view, int viewId) {
         mAdView = (AdView) view.findViewById(viewId);
         AdRequest adRequest = new AdRequest.Builder().build();

@@ -7,7 +7,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "1.1.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [onesignal_app_id               : "1c0d8d58-3665-4c7f-8138-f7364e77b5d3",
                                 onesignal_google_project_number: "10756816291"]
@@ -30,19 +30,19 @@ dependencies {
     // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //OneSignal
-    compile 'com.onesignal:OneSignal:[3.8.3, 3.99.99]'
-    compile 'com.google.android.gms:play-services-gcm:12.0.1'
-    compile 'com.google.android.gms:play-services-location:12.0.1'
+    implementation 'com.onesignal:OneSignal:[3.8.3, 3.99.99]'
+    implementation 'com.google.android.gms:play-services-gcm:12.0.1'
+    implementation 'com.google.android.gms:play-services-location:12.0.1'
 
     //ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     //Facebook
-    compile 'com.facebook.android:facebook-share:[4,5)'
+    implementation 'com.facebook.android:facebook-share:[4,5)'
 
     //For Admob
-    compile 'com.google.android.gms:play-services-ads:12.0.1'
+    implementation 'com.google.android.gms:play-services-ads:12.0.1'
 
 
 }

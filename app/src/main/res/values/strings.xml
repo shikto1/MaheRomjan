@@ -18,7 +18,7 @@
     <string name="rujaVongerKaronTitle">রোজা ভঙ্গের কারণ</string>
     <string name="rujaVongerKaronNoiTitle">রোজা ভঙ্গের কারণ নয়</string>
     <string name="rujaVongerKaronNoiTitleTwo">রোজা ভঙ্গের কারণ নয়</string>
-    <string name="maheRomjanerFojilot">মাহে রমজানের ফজিলত</string>
+    <string name="maheRomjanerFojilot">মাহে রমজানের তাৎপর্য ও ফজিলত</string>
     <string name="ShobeKodorerFojilot">শবে কদরের ফজিলত এবং আমল </string>
     <string name="islamikGan">ইসলামিক গান</string>
     <string name="kuranTilaoat">কোরআন তিলাওয়াত</string>
@@ -244,6 +244,7 @@
 
     <string name="ad_unit_id">ca-app-pub-7822610760721075/8997924444</string>
     <string name="interstitial_ad_id">ca-app-pub-7822610760721075/1913765052</string>
+    <string name="interstitial_ad_id_two">ca-app-pub-7822610760721075/9089186104</string>
     <string name="admob_app_id">ca-app-pub-7822610760721075~2488480125</string>
 
 </resources>
