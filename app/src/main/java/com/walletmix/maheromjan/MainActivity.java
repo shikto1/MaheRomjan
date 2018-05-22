@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity
     private int REQUEST_CODE = 13;
     String TAG = "SHISHIR_13";
     static int currentHour, currentMin;
+    int iftarHour, iftarMin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,30 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (isRamjanRunning()) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            // Getting Hour in 24 Format...
+            String formattedDate = formatter.format(new Date());
+            int length = formattedDate.length();
+            String hourS = "";
+            boolean coloFound = false;
+            for (int j = 0; j < length; j++) {
+                char ch = formattedDate.charAt(j);
+                if (ch == ':') {
+                    coloFound = true;
+                } else {
+                    if (coloFound) {
+                        hourS += ch;
+                    }
+                }
+            }
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int year = calendar.get(Calendar.YEAR);
+            int minute = calendar.get(Calendar.MINUTE);
+            int hour = Integer.parseInt(hourS);
+            currentHour = hour;
+            currentMin = minute;
             if (sessionManager.getBoolean(SessionManager.Key.IS_FIRST_TIME, true)) {
                 sessionManager.put(SessionManager.Key.IS_FIRST_TIME, false);
                 TimeShceduleManager.setSchedule(getApplicationContext());
@@ -129,30 +154,14 @@ public class MainActivity extends AppCompatActivity
 
                 int sehriTime = plusMinusManager.getSehriMinute(realmManager.getSehriTime());
                 int iftarTime = plusMinusManager.getIftarMinute(realmManager.getIftarTime());
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(System.currentTimeMillis());
-                // Getting Hour in 24 Format...
-                String formattedDate = formatter.format(new Date());
-                int length = formattedDate.length();
-                String hourS = "";
-                boolean coloFound = false;
-                for (int j = 0; j < length; j++) {
-                    char ch = formattedDate.charAt(j);
-                    if (ch == ':') {
-                        coloFound = true;
-                    } else {
-                        if (coloFound) {
-                            hourS += ch;
-                        }
-                    }
+                if (iftarTime >= 60) {
+                    int remainder = iftarTime - 60;
+                    iftarHour = 19;
+                    iftarMin = remainder;
+                } else {
+                    iftarHour = 18;
+                    iftarMin = iftarTime;
                 }
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int year = calendar.get(Calendar.YEAR);
-                int minute = calendar.get(Calendar.MINUTE);
-                int hour = Integer.parseInt(hourS);
-                currentHour = hour;
-                currentMin = minute;
                 // Getting Hour in 24 Format...
                 if (hour == 0) {
                     sessionManager.put(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false);
@@ -160,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                 } else if (hour >= 1 && hour <= 3) {
                     if (hour == 3 && minute < sehriTime) {
                         startSehriCountDownServices();
-                    } else if (hour == 3 && minute > sehriTime) {
+                    } else if (hour == 3 && minute >= sehriTime) {
                         startIftarCountDownServices();
                     } else if (hour < 3) {
                         startSehriCountDownServices();
@@ -168,11 +177,9 @@ public class MainActivity extends AppCompatActivity
                 } else if (hour > 3 && hour <= 19) {
                     if (hour < 18) {
                         startIftarCountDownServices();
-                    } else if (hour == 18 && minute < iftarTime) {
+                    } else if (currentHour == iftarHour && currentMin < iftarMin) {
                         startIftarCountDownServices();
-                    } else if (hour == 19 && minute < iftarTime) {
-                        startIftarCountDownServices();
-                    } else if ((hour == 18 && minute > iftarTime) || (hour == 19 && minute > iftarTime)) {
+                    } else if (currentHour == iftarHour && currentMin >= iftarMin) {
                         sessionManager.put(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false);
                         sessionManager.put(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false);
                     }
@@ -476,7 +483,9 @@ public class MainActivity extends AppCompatActivity
                 if (!selectedDistrict.isEmpty()) {
                     sessionManager.put(SessionManager.Key.SELECTED_DISTRICT, selectedDistrict);
                     locationButton.setText(selectedDistrict);
-                    setCountDown();
+                    if (isRamjanRunning()) {
+                        setCountDown();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -486,20 +495,66 @@ public class MainActivity extends AppCompatActivity
 
 
     private void setCountDown() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        // Getting Hour in 24 Format...
+        String formattedDate = formatter.format(new Date());
+        int length = formattedDate.length();
+        String hourS = "";
+        boolean coloFound = false;
+        for (int j = 0; j < length; j++) {
+            char ch = formattedDate.charAt(j);
+            if (ch == ':') {
+                coloFound = true;
+            } else {
+                if (coloFound) {
+                    hourS += ch;
+                }
+            }
+        }
+
+        int minute = calendar.get(Calendar.MINUTE);
+        int hour = Integer.parseInt(hourS);
+
+        currentHour = hour;
+        currentMin = minute;
+
         int sehriTime = plusMinusManager.getSehriMinute(realmManager.getSehriTime());
         int iftarTime = plusMinusManager.getIftarMinute(realmManager.getIftarTime());
-        if (currentHour >= 1 && currentHour <= 3) {
+        if (iftarTime >= 60) {
+            int remainder = iftarTime - 60;
+            iftarHour = 19;
+            iftarMin = remainder;
+        } else {
+            iftarHour = 18;
+            iftarMin = iftarTime;
+        }
+        if (currentHour == 0) {
+            setUpAfterIftarData();
+            sessionManager.put(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false);
+            sessionManager.put(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false);
+        } else if (currentHour >= 1 && currentHour <= 3) {
             if (currentHour >= 1 && currentHour < 3) {
                 startSehriCountDownServices();
             } else if (currentHour == 3 && currentMin < sehriTime) {
                 startSehriCountDownServices();
-            }
-        } else if (currentHour >= 4 && currentHour <= 18) {
-            if (currentHour >= 4 && currentHour < 18) {
-                startIftarCountDownServices();
-            } else if (currentHour == 18 && currentMin < iftarTime) {
+            } else if (currentHour == 3 && currentMin >= sehriTime) {
                 startIftarCountDownServices();
             }
+        } else if (currentHour >= 4 && currentHour <= 19) {
+            if (currentHour >= 4 && currentHour < iftarHour) {
+                startIftarCountDownServices();
+            } else if (currentHour == iftarHour && currentMin < iftarMin) {
+                startIftarCountDownServices();
+            } else if (currentHour == iftarHour && currentMin >= iftarMin) {
+                sessionManager.put(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false);
+                sessionManager.put(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false);
+                setUpAfterIftarData();
+            }
+        } else if (currentHour > 19) {
+            setUpAfterIftarData();
+            sessionManager.put(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false);
+            sessionManager.put(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false);
         } else if (sessionManager.getBoolean(SessionManager.Key.SEHRI_COUNT_DOWN_RUNNING, false)) {
             startSehriCountDownServices();
         } else if (sessionManager.getBoolean(SessionManager.Key.IFTAAR_COUTN_DOWN_RUNNING, false)) {
